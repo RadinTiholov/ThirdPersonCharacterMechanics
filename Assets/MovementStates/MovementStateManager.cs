@@ -41,17 +41,19 @@ public class MovementStateManager : MonoBehaviour
         SwitchState(Idle);
     }
 
-    // Update is called once per frame
     void Update()
     {
         GetDirectionAndMove();
         Gravity();
 
-        anim.SetFloat("hzInput", hzInput);
-        anim.SetFloat("vInput", vInput);
+        // Apply damping for smoother transitions in the blend tree
+        float dampTime = 0.1f;  // Adjust this value to control the smoothness
+        anim.SetFloat("hzInput", hzInput, dampTime, Time.deltaTime);
+        anim.SetFloat("vInput", vInput, dampTime, Time.deltaTime);
 
         currentState.UpdateState(this);
     }
+
 
     public void SwitchState(MovementBaseState state)
     {
