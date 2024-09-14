@@ -3269,7 +3269,7 @@ MonoBehaviour:
   currentMoveSpeed: 0
   walkSpeed: 3
   walkBackSpeed: 2
-  fightSpeed: 2
+  fightSpeed: 1.5
   fightBackSpeed: 1
   runSpeed: 7
   runBackSpeed: 5
