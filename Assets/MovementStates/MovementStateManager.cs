@@ -5,6 +5,7 @@ public class MovementStateManager : MonoBehaviour
     #region Movement
     public float currentMoveSpeed;
     public float walkSpeed = 3, walkBackSpeed = 2;
+    public float fightSpeed = 1, fightBackSpeed = 1;
     public float runSpeed = 7, runBackSpeed = 5;
     public float crouchSpeed = 2, crouchBackSpeed = 1;
     public float acceleration = 5f;
@@ -29,6 +30,7 @@ public class MovementStateManager : MonoBehaviour
     public WalkState Walk = new WalkState();
     public CrouchState Crouch = new CrouchState();
     public RunState Run = new RunState();
+    public FightState Fight = new FightState();
 
     [HideInInspector] public Animator anim;
 

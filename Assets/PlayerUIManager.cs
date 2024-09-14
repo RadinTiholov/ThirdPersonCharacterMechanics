@@ -15,9 +15,11 @@ public class PlayerUIManager : MonoBehaviour
     private bool isFightStarted = false;
 
     AimStateManager aimStateManager;// Reference to call the enter and exit function for fight
+    MovementStateManager movementStateManager;
     void Start()
     {
         aimStateManager = GetComponent<AimStateManager>();
+        movementStateManager = GetComponent<MovementStateManager>();
         // Make sure the interaction UI is hidden at the start
         if (interactionUIElement != null)
         {
@@ -58,6 +60,8 @@ public class PlayerUIManager : MonoBehaviour
 
             startFightUIElement.SetActive(false);
             isFightStarted = true;
+
+            movementStateManager.SwitchState(movementStateManager.Fight);
         }
     }
 
