@@ -7,6 +7,8 @@ public class MovementStateManager : MonoBehaviour
     public float walkSpeed = 3, walkBackSpeed = 2;
     public float runSpeed = 7, runBackSpeed = 5;
     public float crouchSpeed = 2, crouchBackSpeed = 1;
+    public float acceleration = 5f;
+    public float deceleration = 5f;
     [HideInInspector] public Vector3 dir;
     [HideInInspector] public float hzInput, vInput;
     CharacterController controller;
@@ -49,35 +51,45 @@ public class MovementStateManager : MonoBehaviour
         currentState.UpdateState(this);
     }
 
-    public void SwitchState(MovementBaseState state) 
+    public void SwitchState(MovementBaseState state)
     {
         currentState = state;
         currentState.EnterState(this);
     }
-    void GetDirectionAndMove() 
+    void GetDirectionAndMove()
     {
         hzInput = Input.GetAxis("Horizontal");
         vInput = Input.GetAxis("Vertical");
 
         dir = transform.forward * vInput + transform.right * hzInput;
 
+        float targetSpeed = dir.magnitude * currentMoveSpeed;
+        if (targetSpeed > currentMoveSpeed)
+        {
+            currentMoveSpeed = Mathf.MoveTowards(currentMoveSpeed, targetSpeed, acceleration * Time.deltaTime);
+        }
+        else
+        {
+            currentMoveSpeed = Mathf.MoveTowards(currentMoveSpeed, targetSpeed, deceleration * Time.deltaTime);
+        }
+
         controller.Move(dir.normalized * currentMoveSpeed * Time.deltaTime);
     }
 
-    bool isGrounded() 
+    bool isGrounded()
     {
         spherePos = new Vector3(transform.position.x, transform.position.y - groundYOffset, transform.position.z);
 
         return Physics.CheckSphere(spherePos, controller.radius - 0.05f, groundMask);
     }
 
-    void Gravity() 
+    void Gravity()
     {
         if (!isGrounded())
         {
             velocity.y += gravity * Time.deltaTime;
         }
-        else if (velocity.y < 0) 
+        else if (velocity.y < 0)
         {
             velocity.y = -2;
         }
