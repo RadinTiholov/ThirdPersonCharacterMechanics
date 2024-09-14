@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerUIManager : MonoBehaviour
 {
     public GameObject interactionUIElement; // UI element shown when near the shop
-    public GameObject startFightUIElement; // UI element shown when near the shop
+    public GameObject startFightUIElement; // UI element shown when near the enemy
+    public GameObject fightPanel; // UI element shown when fighting
     public GameObject shop;                 // The shop UI/GameObject to activate when "E" is pressed
 
     private bool isNearShop = false;        // To track if the player is near the shop
@@ -29,6 +30,11 @@ public class PlayerUIManager : MonoBehaviour
         if (startFightUIElement != null)
         {
             startFightUIElement.SetActive(false);
+        }
+
+        if (fightPanel != null)
+        {
+            fightPanel.SetActive(false);
         }
 
         // Ensure the shop is inactive at the start
@@ -56,12 +62,20 @@ public class PlayerUIManager : MonoBehaviour
         if (isNearEnemy && Input.GetKeyDown(KeyCode.Tab)) 
         {
             Debug.Log("Fight");
+            // Make narrow camera
             aimStateManager.EnterFightMode();
 
             startFightUIElement.SetActive(false);
             isFightStarted = true;
 
+            // Start animation
             movementStateManager.SwitchState(movementStateManager.Fight);
+
+            // Activate fight ui panel
+            if (fightPanel != null)
+            {
+                fightPanel.SetActive(true);
+            }
         }
     }
 
