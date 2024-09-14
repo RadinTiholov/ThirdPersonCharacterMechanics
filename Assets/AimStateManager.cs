@@ -1,16 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine; // Make sure to include this
 
 public class AimStateManager : MonoBehaviour
 {
     [SerializeField] float mouseSense = 1;
     float xAxis, yAxis;
-    [SerializeField]
-    Transform camFollowPos;
+    [SerializeField] Transform camFollowPos;
+    [SerializeField] CinemachineVirtualCamera virtualCamera; // Reference to the Cinemachine virtual camera
+    [SerializeField] float fightModeFOV = 50f; // FOV in fight mode
+    [SerializeField] float normalModeFOV = 70f; // FOV in normal mode
+
+    private const float xForFight = 0.6f;
+    private const float yForFight = 0f;
+    private const float xForWalk = 1.2f;
+    private const float yForWalk = 0.5f;
+
     void Start()
     {
-        
+        if (virtualCamera == null)
+        {
+            Debug.LogError("Cinemachine Virtual Camera is not assigned!");
+        }
     }
 
     void Update()
@@ -18,6 +30,29 @@ public class AimStateManager : MonoBehaviour
         xAxis += Input.GetAxisRaw("Mouse X") * mouseSense;
         yAxis -= Input.GetAxisRaw("Mouse Y") * mouseSense;
         yAxis = Mathf.Clamp(yAxis, -80, 80);
+    }
+
+    public void EnterFightMode()
+    {
+        // Set the FOV to fight mode (50)
+        if (virtualCamera != null)
+        {
+            virtualCamera.m_Lens.FieldOfView = fightModeFOV;
+
+            camFollowPos.transform.localPosition = new Vector3(xForFight, yForFight, 0f);
+        }
+    }
+
+    public void ExitFightMode()
+    {
+        // Set the FOV to normal mode (70)
+        if (virtualCamera != null)
+        {
+            virtualCamera.m_Lens.FieldOfView = normalModeFOV;
+
+
+            camFollowPos.transform.localPosition = new Vector3(xForWalk, yForWalk, 0f);
+        }
     }
 
     private void LateUpdate()

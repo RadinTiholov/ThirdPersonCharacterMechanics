@@ -5,16 +5,28 @@ using UnityEngine;
 public class PlayerUIManager : MonoBehaviour
 {
     public GameObject interactionUIElement; // UI element shown when near the shop
+    public GameObject startFightUIElement; // UI element shown when near the shop
     public GameObject shop;                 // The shop UI/GameObject to activate when "E" is pressed
 
     private bool isNearShop = false;        // To track if the player is near the shop
+    private bool isNearEnemy = false;
     private bool isUIShopOpen = false;
+
+    private bool isFightStarted = false;
+
+    AimStateManager aimStateManager;// Reference to call the enter and exit function for fight
     void Start()
     {
+        aimStateManager = GetComponent<AimStateManager>();
         // Make sure the interaction UI is hidden at the start
         if (interactionUIElement != null)
         {
             interactionUIElement.SetActive(false);
+        }
+
+        if (startFightUIElement != null)
+        {
+            startFightUIElement.SetActive(false);
         }
 
         // Ensure the shop is inactive at the start
@@ -38,13 +50,21 @@ public class PlayerUIManager : MonoBehaviour
                 isUIShopOpen = shop.activeSelf;
             }
         }
+
+        if (isNearEnemy && Input.GetKeyDown(KeyCode.Tab)) 
+        {
+            Debug.Log("Fight");
+            aimStateManager.EnterFightMode();
+
+            startFightUIElement.SetActive(false);
+            isFightStarted = true;
+        }
     }
 
 
     // This function is called when the player enters a trigger collider
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the object we collided with has the tag "Shop"
         if (other.CompareTag("Shop"))
         {
             isNearShop = true; // Player is near the shop
@@ -53,6 +73,15 @@ public class PlayerUIManager : MonoBehaviour
             if (interactionUIElement != null)
             {
                 interactionUIElement.SetActive(true);
+            }
+        }
+        if (other.CompareTag("Enemy") && !isFightStarted) 
+        {
+            isNearEnemy = true;
+
+            if (startFightUIElement != null)
+            {
+                startFightUIElement.SetActive(true);
             }
         }
     }
@@ -75,6 +104,17 @@ public class PlayerUIManager : MonoBehaviour
             if (shop != null)
             {
                 shop.SetActive(false);
+            }
+        }
+
+        // For enemy
+        if (other.CompareTag("Enemy"))
+        {
+            isNearEnemy = false;
+
+            if (startFightUIElement != null)
+            {
+                startFightUIElement.SetActive(false);
             }
         }
     }
