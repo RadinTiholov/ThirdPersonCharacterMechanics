@@ -12,7 +12,7 @@ public class MovementStateManager : MonoBehaviour
     public float deceleration = 5f;
     [HideInInspector] public Vector3 dir;
     [HideInInspector] public float hzInput, vInput;
-    CharacterController controller;
+    public CharacterController controller;
     #endregion
 
     [SerializeField]
