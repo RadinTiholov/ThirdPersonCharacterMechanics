@@ -3280,6 +3280,7 @@ MonoBehaviour:
   dir: {x: 0, y: 0, z: 0}
   hzInput: 0
   vInput: 0
+  controller: {fileID: 2146799884}
   groundYOffset: 0.6
   groundMask:
     serializedVersion: 2
