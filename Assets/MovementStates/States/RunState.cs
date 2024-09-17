@@ -4,7 +4,6 @@ public class RunState : MovementBaseState
 {
     public override void EnterState(MovementStateManager movement)
     {
-
         movement.anim.SetBool("Running", true);
     }
 

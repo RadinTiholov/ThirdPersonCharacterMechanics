@@ -13,7 +13,7 @@ public class PlayerUIManager : MonoBehaviour
     private bool isNearEnemy = false;
     private bool isUIShopOpen = false;
 
-    private bool isFightStarted = false;
+    private bool fighting = false;
 
     AimStateManager aimStateManager;// Reference to call the enter and exit function for fight
     MovementStateManager movementStateManager;
@@ -59,14 +59,14 @@ public class PlayerUIManager : MonoBehaviour
             }
         }
 
-        if (isNearEnemy && Input.GetKeyDown(KeyCode.Tab)) 
+        if (isNearEnemy && Input.GetKeyDown(KeyCode.Tab))
         {
             Debug.Log("Fight");
             // Make narrow camera
             aimStateManager.EnterFightMode();
 
             startFightUIElement.SetActive(false);
-            isFightStarted = true;
+            fighting = true;
 
             // Start animation
             movementStateManager.SwitchState(movementStateManager.Fight);
@@ -75,6 +75,24 @@ public class PlayerUIManager : MonoBehaviour
             if (fightPanel != null)
             {
                 fightPanel.SetActive(true);
+            }
+        }
+        else if (fighting && Input.GetKeyDown(KeyCode.Tab)) 
+        {
+            Debug.Log("Stopped Fighting");
+
+            // Make narrow camera
+            aimStateManager.ExitFightMode();
+
+            fighting = false;
+
+            // Move back to idle animation
+            movementStateManager.SwitchState(movementStateManager.Idle);
+
+            // Deactivate fight ui panel
+            if (fightPanel != null)
+            {
+                fightPanel.SetActive(false);
             }
         }
     }
@@ -93,7 +111,7 @@ public class PlayerUIManager : MonoBehaviour
                 interactionUIElement.SetActive(true);
             }
         }
-        if (other.CompareTag("Enemy") && !isFightStarted) 
+        if (other.CompareTag("Enemy") && !fighting) 
         {
             isNearEnemy = true;
 
