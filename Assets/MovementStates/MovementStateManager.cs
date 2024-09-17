@@ -34,9 +34,12 @@ public class MovementStateManager : MonoBehaviour
 
     [HideInInspector] public Animator anim;
 
-    void Start()
+    private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+    }
+    void Start()
+    {
         controller = GetComponent<CharacterController>();
         SwitchState(Idle);
     }
@@ -53,7 +56,6 @@ public class MovementStateManager : MonoBehaviour
 
         currentState.UpdateState(this);
     }
-
 
     public void SwitchState(MovementBaseState state)
     {

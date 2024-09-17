@@ -16,13 +16,19 @@ public class AimStateManager : MonoBehaviour
     private const float yForFight = 0f;
     private const float xForWalk = 1.2f;
     private const float yForWalk = 0.5f;
-
+    
+    private MovementStateManager movementStateManager;
     void Start()
     {
         if (virtualCamera == null)
         {
             Debug.LogError("Cinemachine Virtual Camera is not assigned!");
         }
+
+        // Get the instance
+        movementStateManager = GetComponent<MovementStateManager>();
+        // Set the turn to neutral
+        movementStateManager.anim.SetFloat("Turn", 0.5f);
     }
 
     void Update()
@@ -30,6 +36,8 @@ public class AimStateManager : MonoBehaviour
         xAxis += Input.GetAxisRaw("Mouse X") * mouseSense;
         yAxis -= Input.GetAxisRaw("Mouse Y") * mouseSense;
         yAxis = Mathf.Clamp(yAxis, -80, 80);
+
+        CalculateCharacterIdleTurn();
     }
 
     public void EnterFightMode()
@@ -60,4 +68,23 @@ public class AimStateManager : MonoBehaviour
         camFollowPos.localEulerAngles = new Vector3(yAxis, camFollowPos.localEulerAngles.y, camFollowPos.localEulerAngles.z);
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, xAxis, transform.eulerAngles.z);
     }
+
+    private void CalculateCharacterIdleTurn()
+    {
+        // Get the horizontal mouse movement (X-axis)
+        float mouseDelta = Input.GetAxisRaw("Mouse X") * mouseSense;
+
+        // The turn will be 0 for idle, we add the mouse delta to it
+        float turn = mouseDelta;
+
+        // Clamp the turn value between -1 (left turn) and 1 (right turn)
+        turn = Mathf.Clamp(turn, -1f, 1f);
+
+        // Update the animator's "Turn" parameter
+        if (movementStateManager != null && movementStateManager.anim != null)
+        {
+            movementStateManager.anim.SetFloat("Turn", turn);
+        }
+    }
+
 }
