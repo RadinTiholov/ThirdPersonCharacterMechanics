@@ -18,6 +18,8 @@ public class AimStateManager : MonoBehaviour
     private const float yForWalk = 0.5f;
     
     private MovementStateManager movementStateManager;
+    private float currentTurn = 0f; // Store the current turn value for smoothing
+    [SerializeField] private float smoothTime = 0.1f; // The speed at which the turn value changes
     void Start()
     {
         if (virtualCamera == null)
@@ -74,16 +76,16 @@ public class AimStateManager : MonoBehaviour
         // Get the horizontal mouse movement (X-axis)
         float mouseDelta = Input.GetAxisRaw("Mouse X") * mouseSense;
 
-        // The turn will be 0 for idle, we add the mouse delta to it
-        float turn = mouseDelta;
+        // The target turn value is based on mouse input
+        float targetTurn = Mathf.Clamp(mouseDelta, -1f, 1f);
 
-        // Clamp the turn value between -1 (left turn) and 1 (right turn)
-        turn = Mathf.Clamp(turn, -1f, 1f);
+        // Smoothly interpolate between the current turn and the target turn
+        currentTurn = Mathf.Lerp(currentTurn, targetTurn, Time.deltaTime / smoothTime);
 
         // Update the animator's "Turn" parameter
         if (movementStateManager != null && movementStateManager.anim != null)
         {
-            movementStateManager.anim.SetFloat("Turn", turn);
+            movementStateManager.anim.SetFloat("Turn", currentTurn);
         }
     }
 
