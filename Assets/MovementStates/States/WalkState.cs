@@ -30,6 +30,12 @@ public class WalkState : MovementBaseState
         {
             movement.currentMoveSpeed = movement.walkSpeed;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            movement.previousState = this;
+            ExitState(movement, movement.Jump);
+        }
     }
 
     void ExitState(MovementStateManager movement, MovementBaseState state) 

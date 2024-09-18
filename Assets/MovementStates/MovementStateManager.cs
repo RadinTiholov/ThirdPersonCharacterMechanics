@@ -21,16 +21,24 @@ public class MovementStateManager : MonoBehaviour
     LayerMask groundMask;
     Vector3 spherePos;
 
+    #region Gravity
     [SerializeField] float gravity = -9.81f;
+    [SerializeField] float jumpForce = 10f;
+    [HideInInspector] public bool jumped;
     Vector3 velocity;
+    #endregion
 
-    MovementBaseState currentState;
+    #region States
+    public MovementBaseState previousState;
+    public MovementBaseState currentState;
 
     public IdleState Idle = new IdleState();
     public WalkState Walk = new WalkState();
     public CrouchState Crouch = new CrouchState();
     public RunState Run = new RunState();
     public FightState Fight = new FightState();
+    public JumpState Jump = new JumpState();
+    #endregion
 
     [HideInInspector] public Animator anim;
 
@@ -48,6 +56,7 @@ public class MovementStateManager : MonoBehaviour
     {
         GetDirectionAndMove();
         Gravity();
+        Falling();
 
         // Apply damping for smoother transitions in the blend tree
         float dampTime = 0.1f;  // Adjust this value to control the smoothness
@@ -82,30 +91,60 @@ public class MovementStateManager : MonoBehaviour
         controller.Move(dir.normalized * currentMoveSpeed * Time.deltaTime);
     }
 
-    bool isGrounded()
+    public bool isGrounded()
     {
-        spherePos = new Vector3(transform.position.x, transform.position.y - groundYOffset, transform.position.z);
+        // Adjust sphere position to be slightly below the player's feet
+        spherePos = new Vector3(transform.position.x, transform.position.y - controller.height / 2 - 0.5f, transform.position.z);
 
+        //Debug.Log(Physics.CheckSphere(spherePos, controller.radius - 0.05f, groundMask) ? "is grounded" : "it is not");
+        // Perform the ground check using Physics.CheckSphere
         return Physics.CheckSphere(spherePos, controller.radius - 0.05f, groundMask);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (controller != null)
+        {
+            Gizmos.color = Color.red;
+            Vector3 spherePos = new Vector3(transform.position.x, transform.position.y - controller.height / 2 - 0.5f, transform.position.z);
+            Gizmos.DrawWireSphere(spherePos, controller.radius - 0.05f);
+        }
     }
 
     void Gravity()
     {
-        if (!isGrounded())
+        if (isGrounded())
         {
-            velocity.y += gravity * Time.deltaTime;
+            if (velocity.y < 0)
+            {
+                velocity.y = -2f;  // Small value to ensure player sticks to the ground
+            }
         }
-        else if (velocity.y < 0)
+        else
         {
-            velocity.y = -2;
+            // Apply gravity over time when not grounded
+            velocity.y += gravity * Time.deltaTime;
         }
 
         controller.Move(velocity * Time.deltaTime);
     }
 
-    private void OnDrawGizmos()
+    public void Falling() 
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(spherePos, controller.radius - 0.05f);
+        //Debug.Log(!isGrounded() ? "Falling" : "On the ground");
+        anim.SetBool("Falling", !isGrounded());
+    }
+
+    public void JumpForce()
+    {
+        if (isGrounded())  // Ensure jump can only be triggered when grounded
+        {
+            velocity.y += jumpForce;
+        }
+    }
+
+    public void Jumped() 
+    {
+        jumped = true;
     }
 }
