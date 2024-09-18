@@ -8,6 +8,7 @@ public class MovementStateManager : MonoBehaviour
     public float fightSpeed = 1, fightBackSpeed = 1;
     public float runSpeed = 7, runBackSpeed = 5;
     public float crouchSpeed = 2, crouchBackSpeed = 1;
+    public float airSpeed = 1.5f;
     public float acceleration = 5f;
     public float deceleration = 5f;
     [HideInInspector] public Vector3 dir;
@@ -77,18 +78,27 @@ public class MovementStateManager : MonoBehaviour
         vInput = Input.GetAxis("Vertical");
 
         dir = transform.forward * vInput + transform.right * hzInput;
+        Vector3 airDir = Vector3.zero;
 
-        float targetSpeed = dir.magnitude * currentMoveSpeed;
-        if (targetSpeed > currentMoveSpeed)
+        if (!isGrounded())
         {
-            currentMoveSpeed = Mathf.MoveTowards(currentMoveSpeed, targetSpeed, acceleration * Time.deltaTime);
+            // When is in the air, adjust the speed
+            airDir = transform.forward * vInput + transform.right * hzInput;
         }
-        else
+        else 
         {
-            currentMoveSpeed = Mathf.MoveTowards(currentMoveSpeed, targetSpeed, deceleration * Time.deltaTime);
+            float targetSpeed = dir.magnitude * currentMoveSpeed;
+            if (targetSpeed > currentMoveSpeed)
+            {
+                currentMoveSpeed = Mathf.MoveTowards(currentMoveSpeed, targetSpeed, acceleration * Time.deltaTime);
+            }
+            else
+            {
+                currentMoveSpeed = Mathf.MoveTowards(currentMoveSpeed, targetSpeed, deceleration * Time.deltaTime);
+            }
         }
 
-        controller.Move(dir.normalized * currentMoveSpeed * Time.deltaTime);
+        controller.Move((dir.normalized * currentMoveSpeed + airDir.normalized * airSpeed) * Time.deltaTime);
     }
 
     public bool isGrounded()
