@@ -330,6 +330,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb7b1f7fb7e61747b13450f4f1ac6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &94364857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94364853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4716b5ba97b091c439e95ce230485193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &109524993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,6 +1908,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 94364855}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5b2c867f91e1c3946bbda673eec02591,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 94364857}
   m_SourcePrefab: {fileID: 100100000, guid: 5b2c867f91e1c3946bbda673eec02591, type: 3}
 --- !u!1 &1372090754
 GameObject:
@@ -3319,6 +3335,7 @@ MonoBehaviour:
   runBackSpeed: 5
   crouchSpeed: 2
   crouchBackSpeed: 1
+  airSpeed: 1.5
   acceleration: 5
   deceleration: 5
   dir: {x: 0, y: 0, z: 0}

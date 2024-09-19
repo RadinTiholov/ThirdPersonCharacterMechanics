@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public class FightState : MovementBaseState
 {
@@ -29,13 +30,6 @@ public class FightState : MovementBaseState
         {
             // Set "Attacking" to true
             movement.anim.SetBool("Attacking", true);
-
-            // Start moving forward smoothly
-            isMovingForward = true;
-            attackMoveTimer = 0f;
-
-            // Define the target forward position (e.g., 1 unit forward)
-            attackMoveTarget = movement.transform.position + movement.transform.forward * 1f;
         }
 
         // Smooth forward movement while attacking
@@ -64,6 +58,16 @@ public class FightState : MovementBaseState
             // Set "Attacking" to false
             movement.anim.SetBool("Attacking", false);
         }
+    }
+
+    public void TriggerMovingForward(MovementStateManager movement, float units)
+    {
+        // Start moving forward smoothly
+        isMovingForward = true;
+        attackMoveTimer = 0f;
+
+        // Define the target forward position (e.g., 1 unit forward)
+        attackMoveTarget = movement.transform.position + movement.transform.forward * units;
     }
 
     public void ExitState(MovementStateManager movement, MovementBaseState state)
