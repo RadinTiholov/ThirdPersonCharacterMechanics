@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 109524995}
   - component: {fileID: 109524994}
   - component: {fileID: 109524996}
+  - component: {fileID: 109524997}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -420,6 +421,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &109524997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109524993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f327d252cad3c8468fe11509a9a2575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2146799879}
+  moveSpeed: 1
+  stoppingDistance: 3
 --- !u!1 &157207112
 GameObject:
   m_ObjectHideFlags: 0
@@ -3035,7 +3051,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 5b2c867f91e1c3946bbda673eec02591,
         type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9103607595136292613, guid: 5b2c867f91e1c3946bbda673eec02591,
         type: 3}
@@ -3546,6 +3562,7 @@ MonoBehaviour:
   startFightUIElement: {fileID: 2119506286}
   fightPanel: {fileID: 1691094281}
   shop: {fileID: 2117557686}
+  fighting: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

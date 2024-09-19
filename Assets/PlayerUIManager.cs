@@ -13,7 +13,7 @@ public class PlayerUIManager : MonoBehaviour
     private bool isNearEnemy = false;
     private bool isUIShopOpen = false;
 
-    private bool fighting = false;
+    public bool fighting = false;
 
     AimStateManager aimStateManager;// Reference to call the enter and exit function for fight
     MovementStateManager movementStateManager;
