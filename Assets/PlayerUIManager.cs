@@ -105,6 +105,8 @@ public class PlayerUIManager : MonoBehaviour
 
             interactionUIElement.SetActive(false);
 
+            aimStateManager.EnterFightMode();
+
             movementStateManager.SwitchState(movementStateManager.Riffle);
         }
     }
