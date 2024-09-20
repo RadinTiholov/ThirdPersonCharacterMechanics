@@ -18,7 +18,10 @@ public class HeadCollision : MonoBehaviour
         // Check if the other object is the player's weapon
         if (other.CompareTag("PlayerWeapon"))
         {
-            anim.SetTrigger("Hit");
+            if (CombatStateManager.Instance.weaponInHittingPosition) 
+            {
+                anim.SetTrigger("Hit");
+            }
         }
     }
 }

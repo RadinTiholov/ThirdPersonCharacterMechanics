@@ -47,5 +47,9 @@ public class EnemyMovementManager : MonoBehaviour
             // Apply animation based on whether the enemy is moving or not
             enemyAnimator.SetBool("isMoving", isMoving);
         }
+        else 
+        {
+            isMoving = false;
+        }
     }
 }
