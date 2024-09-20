@@ -9,11 +9,14 @@ public class PlayerUIManager : MonoBehaviour
     public GameObject fightPanel; // UI element shown when fighting
     public GameObject shop;                 // The shop UI/GameObject to activate when "E" is pressed
 
+    public bool fighting = false;
+
     private bool isNearShop = false;        // To track if the player is near the shop
     private bool isNearEnemy = false;
+    private bool isNearItem = false;
     private bool isUIShopOpen = false;
 
-    public bool fighting = false;
+    private GameObject currentItem;
 
     AimStateManager aimStateManager;// Reference to call the enter and exit function for fight
     MovementStateManager movementStateManager;
@@ -95,6 +98,15 @@ public class PlayerUIManager : MonoBehaviour
                 fightPanel.SetActive(false);
             }
         }
+
+        if (isNearItem && Input.GetKeyDown(KeyCode.E))
+        {
+            currentItem.SetActive(false);
+
+            interactionUIElement.SetActive(false);
+
+            movementStateManager.SwitchState(movementStateManager.Riffle);
+        }
     }
 
 
@@ -118,6 +130,15 @@ public class PlayerUIManager : MonoBehaviour
             if (startFightUIElement != null)
             {
                 startFightUIElement.SetActive(true);
+            }
+        }
+        if (other.CompareTag("Item") && !fighting)
+        {
+            isNearItem = true;
+            currentItem = other.gameObject;
+            if (interactionUIElement != null)
+            {
+                interactionUIElement.SetActive(true);
             }
         }
     }
@@ -151,6 +172,17 @@ public class PlayerUIManager : MonoBehaviour
             if (startFightUIElement != null)
             {
                 startFightUIElement.SetActive(false);
+            }
+        }
+
+        // For item
+        if (other.CompareTag("Item"))
+        {
+            isNearItem = false;
+
+            if (interactionUIElement != null)
+            {
+                interactionUIElement.SetActive(false);
             }
         }
     }
