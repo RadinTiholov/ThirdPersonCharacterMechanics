@@ -7,6 +7,12 @@ public class RiffleState : MovementBaseState
 
     public override void UpdateState(MovementStateManager movement)
     {
-        throw new System.NotImplementedException();
+
+    }
+
+    void ExitState(MovementStateManager movement, MovementBaseState state)
+    {
+        movement.anim.SetBool("Walking", false);
+        movement.SwitchState(state);
     }
 }
