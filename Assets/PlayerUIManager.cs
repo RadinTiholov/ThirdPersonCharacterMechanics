@@ -7,7 +7,10 @@ public class PlayerUIManager : MonoBehaviour
     public GameObject interactionUIElement; // UI element shown when near the shop
     public GameObject startFightUIElement; // UI element shown when near the enemy
     public GameObject fightPanel; // UI element shown when fighting
-    public GameObject shop;                 // The shop UI/GameObject to activate when "E" is pressed
+    public GameObject rifflePanel; 
+    public GameObject shop;        // The shop UI/GameObject to activate when "E" is pressed
+
+    public GameObject akModel;
 
     public bool fighting = false;
 
@@ -40,10 +43,19 @@ public class PlayerUIManager : MonoBehaviour
             fightPanel.SetActive(false);
         }
 
-        // Ensure the shop is inactive at the start
+        if (rifflePanel != null)
+        {
+            rifflePanel.SetActive(false);
+        }
+
         if (shop != null)
         {
             shop.SetActive(false);
+        }
+
+        if (akModel != null)
+        {
+            akModel.SetActive(false);
         }
     }
 
@@ -105,7 +117,18 @@ public class PlayerUIManager : MonoBehaviour
 
             interactionUIElement.SetActive(false);
 
-            aimStateManager.EnterFightMode();
+            aimStateManager.EnterRiffleMode();
+
+            // Activate fight ui panel
+            if (rifflePanel != null)
+            {
+                rifflePanel.SetActive(true);
+            }
+
+            if (akModel != null)
+            {
+                akModel.SetActive(true);
+            }
 
             movementStateManager.SwitchState(movementStateManager.Riffle);
         }
@@ -138,6 +161,7 @@ public class PlayerUIManager : MonoBehaviour
         {
             isNearItem = true;
             currentItem = other.gameObject;
+
             if (interactionUIElement != null)
             {
                 interactionUIElement.SetActive(true);

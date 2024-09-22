@@ -16,7 +16,9 @@ public class AimStateManager : MonoBehaviour
     private const float yForFight = 0f;
     private const float xForWalk = 1.2f;
     private const float yForWalk = 0.5f;
-    
+    private const float xForRiffle = 1f;
+    private const float yForRiffle = 0f;
+
     private MovementStateManager movementStateManager;
     private float currentTurn = 0f; // Store the current turn value for smoothing
     [SerializeField] private float smoothTime = 0.1f; // The speed at which the turn value changes
@@ -40,6 +42,29 @@ public class AimStateManager : MonoBehaviour
         yAxis = Mathf.Clamp(yAxis, -80, 80);
 
         CalculateCharacterIdleTurn();
+    }
+
+    public void EnterRiffleMode()
+    {
+        // Set the FOV to fight mode (50)
+        if (virtualCamera != null)
+        {
+            virtualCamera.m_Lens.FieldOfView = fightModeFOV;
+
+            camFollowPos.transform.localPosition = new Vector3(xForRiffle, yForRiffle, 0f);
+        }
+    }
+
+    public void ExitRiffleMode()
+    {
+        // Set the FOV to normal mode (70)
+        if (virtualCamera != null)
+        {
+            virtualCamera.m_Lens.FieldOfView = normalModeFOV;
+
+
+            camFollowPos.transform.localPosition = new Vector3(xForWalk, yForWalk, 0f);
+        }
     }
 
     public void EnterFightMode()
