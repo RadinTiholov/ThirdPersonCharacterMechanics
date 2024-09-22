@@ -7,12 +7,27 @@ public class RiffleState : MovementBaseState
 
     public override void UpdateState(MovementStateManager movement)
     {
+        if (movement.dir.magnitude > 0.1f)
+        {
 
-    }
-
-    void ExitState(MovementStateManager movement, MovementBaseState state)
-    {
-        movement.anim.SetBool("Walking", false);
-        movement.SwitchState(state);
+            movement.SwitchState(movement.RiffleWalk);
+            //if (Input.GetKey(KeyCode.LeftShift))
+            //{
+            //    movement.SwitchState(movement.Run);
+            //}
+            //else
+            //{
+            //    movement.SwitchState(movement.Walk);
+            //}
+        }
+        //if (Input.GetKeyDown(KeyCode.LeftControl))
+        //{
+        //    movement.SwitchState(movement.Crouch);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    movement.previousState = this;
+        //    movement.SwitchState(movement.Jump);
+        //}
     }
 }

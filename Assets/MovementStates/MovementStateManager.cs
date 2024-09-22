@@ -40,6 +40,7 @@ public class MovementStateManager : MonoBehaviour
     public FightState Fight = new FightState();
     public JumpState Jump = new JumpState();
     public RiffleState Riffle = new RiffleState();
+    public RiffleWalkState RiffleWalk = new RiffleWalkState();
     #endregion
 
     [HideInInspector] public Animator anim;
