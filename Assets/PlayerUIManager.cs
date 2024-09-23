@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -9,8 +9,6 @@ public class PlayerUIManager : MonoBehaviour
     public GameObject fightPanel; // UI element shown when fighting
     public GameObject rifflePanel; 
     public GameObject shop;        // The shop UI/GameObject to activate when "E" is pressed
-
-    public GameObject akModel;
 
     public bool fighting = false;
 
@@ -23,6 +21,9 @@ public class PlayerUIManager : MonoBehaviour
 
     AimStateManager aimStateManager;// Reference to call the enter and exit function for fight
     MovementStateManager movementStateManager;
+
+    public RigBuilder rigBuilder;
+
     void Start()
     {
         aimStateManager = GetComponent<AimStateManager>();
@@ -51,11 +52,6 @@ public class PlayerUIManager : MonoBehaviour
         if (shop != null)
         {
             shop.SetActive(false);
-        }
-
-        if (akModel != null)
-        {
-            akModel.SetActive(false);
         }
     }
 
@@ -125,10 +121,9 @@ public class PlayerUIManager : MonoBehaviour
                 rifflePanel.SetActive(true);
             }
 
-            if (akModel != null)
-            {
-                akModel.SetActive(true);
-            }
+            // Activate rig builder
+            rigBuilder.enabled = true;
+            rigBuilder.Build();
 
             movementStateManager.SwitchState(movementStateManager.Riffle);
         }

@@ -22,6 +22,11 @@ public class AimStateManager : MonoBehaviour
     private MovementStateManager movementStateManager;
     private float currentTurn = 0f; // Store the current turn value for smoothing
     [SerializeField] private float smoothTime = 0.1f; // The speed at which the turn value changes
+
+    [SerializeField] Transform aimPos;
+    [SerializeField] float aimSmoothSpeed = 20;
+    [SerializeField] LayerMask aimMask;
+
     void Start()
     {
         if (virtualCamera == null)
@@ -42,6 +47,14 @@ public class AimStateManager : MonoBehaviour
         yAxis = Mathf.Clamp(yAxis, -80, 80);
 
         CalculateCharacterIdleTurn();
+
+        Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, aimMask)) 
+        {
+            aimPos.position = Vector3.Lerp(aimPos.position, hit.point, aimSmoothSpeed * Time.deltaTime);
+        }
     }
 
     public void EnterRiffleMode()
