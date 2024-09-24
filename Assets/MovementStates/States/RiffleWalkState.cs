@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class RiffleWalkState : MovementBaseState
 {
     public override void EnterState(MovementStateManager movement)
@@ -32,7 +34,14 @@ public class RiffleWalkState : MovementBaseState
         {
             movement.currentMoveSpeed = movement.walkSpeed;
         }
-
+        if (Input.GetMouseButtonDown(0))
+        {
+            movement.shootingManager.EnableMuzzle();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            movement.shootingManager.DesableMuzzle();
+        }
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
         //    movement.previousState = this;

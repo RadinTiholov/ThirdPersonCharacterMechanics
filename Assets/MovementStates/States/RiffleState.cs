@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class RiffleState : MovementBaseState
 {
     public override void EnterState(MovementStateManager movement)
@@ -29,5 +31,13 @@ public class RiffleState : MovementBaseState
         //    movement.previousState = this;
         //    movement.SwitchState(movement.Jump);
         //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            movement.shootingManager.EnableMuzzle();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            movement.shootingManager.DesableMuzzle();
+        }
     }
 }

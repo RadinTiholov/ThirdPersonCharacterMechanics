@@ -44,9 +44,11 @@ public class MovementStateManager : MonoBehaviour
     #endregion
 
     [HideInInspector] public Animator anim;
+    [HideInInspector] public ShootingManager shootingManager;
 
     private void Awake()
     {
+        shootingManager = GetComponent<ShootingManager>();
         anim = GetComponentInChildren<Animator>();
     }
     void Start()
