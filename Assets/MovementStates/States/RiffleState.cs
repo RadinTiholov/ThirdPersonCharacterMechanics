@@ -39,5 +39,9 @@ public class RiffleState : MovementBaseState
         {
             movement.shootingManager.DesableMuzzle();
         }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            movement.anim.SetBool("Riffle", false);
+        }
     }
 }

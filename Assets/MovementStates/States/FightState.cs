@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+
 public class FightState : MovementBaseState
 {
     private float attackMoveDuration = 0.2f; // Duration of the forward movement (in seconds)

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -16,6 +15,7 @@ public class PlayerUIManager : MonoBehaviour
     private bool isNearEnemy = false;
     private bool isNearItem = false;
     private bool isUIShopOpen = false;
+    private bool isHoldingItem = false;
 
     private GameObject currentItem;
 
@@ -23,6 +23,8 @@ public class PlayerUIManager : MonoBehaviour
     MovementStateManager movementStateManager;
 
     public RigBuilder rigBuilder;
+
+    public GameObject akModel;
 
     void Start()
     {
@@ -57,78 +59,140 @@ public class PlayerUIManager : MonoBehaviour
 
     void Update()
     {
-        // If the player is near the shop and presses "E", toggle the shop UI
+        // Toggle Shop UI when near the shop and press "E"
         if (isNearShop && Input.GetKeyDown(KeyCode.E))
         {
-            if (shop != null)
-            {
-                // Toggle the shop GameObject's active state
-                shop.SetActive(!shop.activeSelf);
-
-                // Update the state of isUIShopOpen accordingly
-                isUIShopOpen = shop.activeSelf;
-            }
+            ToggleShop();
         }
 
+        // Toggle Fight Mode when near enemy and press "Tab"
         if (isNearEnemy && Input.GetKeyDown(KeyCode.Tab))
         {
-            Debug.Log("Fight");
-            // Make narrow camera
-            aimStateManager.EnterFightMode();
-
-            startFightUIElement.SetActive(false);
-            fighting = true;
-
-            // Start animation
-            movementStateManager.SwitchState(movementStateManager.Fight);
-
-            // Activate fight ui panel
-            if (fightPanel != null)
+            if (!fighting)
             {
-                fightPanel.SetActive(true);
+                EnterFightMode();
             }
-        }
-        else if (fighting && Input.GetKeyDown(KeyCode.Tab)) 
-        {
-            Debug.Log("Stopped Fighting");
-
-            // Make narrow camera
-            aimStateManager.ExitFightMode();
-
-            fighting = false;
-
-            // Move back to idle animation
-            movementStateManager.SwitchState(movementStateManager.Idle);
-
-            // Deactivate fight ui panel
-            if (fightPanel != null)
+            else
             {
-                fightPanel.SetActive(false);
+                ExitFightMode();
             }
         }
 
+        // Interact with Item when near and press "E"
         if (isNearItem && Input.GetKeyDown(KeyCode.E))
         {
-            currentItem.SetActive(false);
+            PickupItem();
+        }
 
-            interactionUIElement.SetActive(false);
-
-            aimStateManager.EnterRiffleMode();
-
-            // Activate fight ui panel
-            if (rifflePanel != null)
-            {
-                rifflePanel.SetActive(true);
-            }
-
-            // Activate rig builder
-            rigBuilder.enabled = true;
-            rigBuilder.Build();
-
-            movementStateManager.SwitchState(movementStateManager.Riffle);
+        if (isHoldingItem && Input.GetKeyDown(KeyCode.Tab)) 
+        {
+            DropItem();
         }
     }
 
+    // Function to toggle the shop UI
+    void ToggleShop()
+    {
+        if (shop == null) return;
+
+        // Toggle shop active state
+        shop.SetActive(!shop.activeSelf);
+
+        // Update shop UI open status
+        isUIShopOpen = shop.activeSelf;
+    }
+
+    // Function to enter fight mode
+    void EnterFightMode()
+    {
+        Debug.Log("Fight");
+        fighting = true;
+
+        // Make narrow camera
+        aimStateManager.EnterFightMode();
+
+        // Switch to fight animation
+        movementStateManager.SwitchState(movementStateManager.Fight);
+
+        // Disable start fight UI and enable fight panel
+        if (startFightUIElement != null)
+        {
+            startFightUIElement.SetActive(false);
+        }
+
+        if (fightPanel != null)
+        {
+            fightPanel.SetActive(true);
+        }
+    }
+
+    // Function to exit fight mode
+    void ExitFightMode()
+    {
+        Debug.Log("Stopped Fighting");
+        fighting = false;
+
+        // Exit narrow camera mode
+        aimStateManager.ExitFightMode();
+
+        // Switch to idle animation
+        movementStateManager.SwitchState(movementStateManager.Idle);
+
+        // Disable fight UI panel
+        if (fightPanel != null)
+        {
+            fightPanel.SetActive(false);
+        }
+    }
+
+    // Function to pick up the item and switch to rifle mode
+    void PickupItem()
+    {
+        if (currentItem == null || interactionUIElement == null) return;
+
+        // Deactivate the current item and interaction UI
+        currentItem.SetActive(false);
+        interactionUIElement.SetActive(false);
+
+        // Switch to rifle mode
+        aimStateManager.EnterRiffleMode();
+
+        // Enable and build rig
+        if (rifflePanel != null)
+        {
+            rifflePanel.SetActive(true);
+        }
+
+        rigBuilder.enabled = true;
+        rigBuilder.Build();
+
+        isHoldingItem = true;
+
+        // Switch to rifle animation
+        movementStateManager.SwitchState(movementStateManager.Riffle);
+    }
+
+    // Function to drop the item 
+    void DropItem()
+    {
+        aimStateManager.ExitRiffleMode();
+
+        if (rifflePanel != null)
+        {
+            rifflePanel.SetActive(false);
+        }
+
+        currentItem.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+        currentItem.SetActive(true);
+
+        rigBuilder.enabled = false;
+
+        isHoldingItem = false;
+
+        akModel.SetActive(false);
+
+        movementStateManager.SwitchState(movementStateManager.Idle);
+    }
 
     // This function is called when the player enters a trigger collider
     private void OnTriggerEnter(Collider other)

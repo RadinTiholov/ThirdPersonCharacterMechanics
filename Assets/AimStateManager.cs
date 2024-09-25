@@ -71,13 +71,7 @@ public class AimStateManager : MonoBehaviour
     public void ExitRiffleMode()
     {
         // Set the FOV to normal mode (70)
-        if (virtualCamera != null)
-        {
-            virtualCamera.m_Lens.FieldOfView = normalModeFOV;
-
-
-            camFollowPos.transform.localPosition = new Vector3(xForWalk, yForWalk, 0f);
-        }
+        EnterNormalMode();
     }
 
     public void EnterFightMode()
@@ -92,6 +86,12 @@ public class AimStateManager : MonoBehaviour
     }
 
     public void ExitFightMode()
+    {
+        // Set the FOV to normal mode (70)
+        EnterNormalMode();
+    }
+
+    private void EnterNormalMode() 
     {
         // Set the FOV to normal mode (70)
         if (virtualCamera != null)

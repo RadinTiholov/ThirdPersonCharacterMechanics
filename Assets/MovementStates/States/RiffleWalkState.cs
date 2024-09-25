@@ -42,6 +42,11 @@ public class RiffleWalkState : MovementBaseState
         {
             movement.shootingManager.DesableMuzzle();
         }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            movement.anim.SetBool("RiffleWalk", false);
+            movement.anim.SetBool("Riffle", false);
+        }
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
         //    movement.previousState = this;
