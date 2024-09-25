@@ -558,7 +558,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 109524995}
-  - component: {fileID: 109524994}
   - component: {fileID: 109524996}
   - component: {fileID: 109524997}
   m_Layer: 7
@@ -568,29 +567,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &109524994
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109524993}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &109524995
 Transform:
   m_ObjectHideFlags: 0
@@ -4147,7 +4123,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.006
+  m_Radius: 0.009
   m_Center: {x: 0.002, y: 0, z: 0}
 --- !u!114 &1332375172
 MonoBehaviour:
@@ -7770,6 +7746,7 @@ MonoBehaviour:
   shop: {fileID: 2117557686}
   fighting: 0
   rigBuilder: {fileID: 94364859}
+  akModel: {fileID: 164208600}
 --- !u!114 &2146799888
 MonoBehaviour:
   m_ObjectHideFlags: 0
