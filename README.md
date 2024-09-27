@@ -16,5 +16,5 @@ A basic implementation of GTA-style third-person character mechanics developed u
 - Combo mechanics enabled for multiple strikes.
 
 ### 🔫 Rifle Mechanics
-![Rifle.gif](https://github.com/RadinTiholov/ThirdPersonCharacterMechanics/blob/main/Assets/Gifs/2024-09-2715-38-04online-video-cutter.com-ezgif.com-video-to-gif-converter.gif)
+![Rifle.gif](https://github.com/RadinTiholov/ThirdPersonCharacterMechanics/blob/main/Assets/Gifs/2024-09-2715-42-06online-video-cutter.com-ezgif.com-video-to-gif-converter.gif)
 - Press **Left Mouse Button** to fire the rifle.
