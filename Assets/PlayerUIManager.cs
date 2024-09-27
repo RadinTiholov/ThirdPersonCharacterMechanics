@@ -55,6 +55,12 @@ public class PlayerUIManager : MonoBehaviour
         {
             shop.SetActive(false);
         }
+
+        // Hides the cursor
+        Cursor.visible = false;
+
+        // Locks the cursor to the center of the screen
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
